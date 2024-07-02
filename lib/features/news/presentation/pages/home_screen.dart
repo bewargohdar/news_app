@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:news_flutter/features/news/data/datasources/remote/news_view_models.dart';
+import 'package:news_flutter/features/news/data/models/article_model.dart';
 import 'package:news_flutter/features/news/data/models/news_model.dart';
-import 'package:news_flutter/features/news/data/datasources/viewModels/news_view_models.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _MyHomePageState extends State<HomeScreen> {
   int selectButtonIndex = 0;
-  List<NewsModel> _newsList = [];
+  List<Article> _newsList = [];
 
   @override
   void initState() {
@@ -22,11 +23,17 @@ class _MyHomePageState extends State<HomeScreen> {
   }
 
   Future<void> _fetchNews() async {
-    final newsViewModel = NewsViewModel();
-    final news = await newsViewModel.getNews();
-    setState(() {
-      _newsList = [news];
-    });
+    try {
+      final news = await NewsViewModel().getNews();
+
+      setState(() {
+        _newsList =
+            news.articles; // Assuming articles is already a List<NewsModel>
+      });
+    } catch (e) {
+      print('Error fetching news: $e');
+      // Handle error (show error message, update UI accordingly)
+    }
   }
 
   @override
@@ -200,66 +207,21 @@ class _MyHomePageState extends State<HomeScreen> {
                     margin: const EdgeInsets.only(top: 12),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Stack(children: [
-                        Image.network(
-                            _newsList[0].articles[0].urlToImage.toString(),
-                            width: 350,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Text('No Image'),
-                          );
-                        }),
-                        Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 10, left: 10),
-                              child: const Positioned(
-                                  child: CircleAvatar(
-                                radius:
-                                    20, // Adjust the size of the avatar as needed
-                                backgroundColor: Colors
-                                    .white, // Background color of the avatar
-                                child: Icon(
-                                  Icons
-                                      .person, // Replace with your preferred icon
-                                  color: Colors.black, // Icon color
-                                  size: 30, // Size of the icon
-                                ),
-                              )),
-                            ),
-                            Text(
-                              _newsList[0].articles[0].source.name,
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            )
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 150, left: 10),
-                          child: Column(
-                            children: [
-                              Text(
-                                _newsList[0].articles[0].publishedAt.toString(),
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 247, 255, 246),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ]),
+                      child: _newsList.isEmpty
+                          ? Center(child: CircularProgressIndicator())
+                          : Image.network(_newsList[0].urlToImage,
+                              width: 350, fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Text('No Image'),
+                              );
+                            }),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(6),
                     child: Text(
-                      _newsList[0].articles[0].title,
+                      _newsList.isEmpty ? '' : _newsList[0].title,
                       maxLines: 2,
                       style: const TextStyle(
                         fontSize: 18,
@@ -285,7 +247,7 @@ class _MyHomePageState extends State<HomeScreen> {
         Expanded(
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: _newsList[0].articles.length,
+            itemCount: _newsList.length,
             itemBuilder: (context, index) {
               return Container(
                 width: 350,
@@ -299,37 +261,39 @@ class _MyHomePageState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Container(
-                        width: 300,
-                        height: 200,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                              _newsList[0]
-                                  .articles[index + 1]
-                                  .urlToImage
-                                  .toString(),
-                              width: 350,
-                              height: 200,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                            return const Center(
-                              child: Text('No Image'),
-                            );
-                          }),
+                      GestureDetector(
+                        onTap: () {
+                          // do something
+                        },
+                        child: Container(
+                          width: 300,
+                          height: 200,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.network(
+                                _newsList[index + 1].urlToImage.toString(),
+                                width: 350,
+                                height: 200,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Text('No Image'),
+                              );
+                            }),
+                          ),
                         ),
                       ),
                       const SizedBox(
                         width: 10,
                       ),
                       Text(
-                        _newsList[0].articles[index + 1].title,
+                        _newsList[index + 1].title,
                         maxLines: 2,
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        _newsList[0].articles[index + 1].author.toString(),
+                        _newsList[index + 1].author,
                       )
                     ],
                   ),

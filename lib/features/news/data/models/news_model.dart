@@ -11,24 +11,15 @@ class NewsModel {
     required this.articles,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'status': status,
-      'totalResults': totalResults,
-      'articles': articles.map((article) => article.toJson()).toList(),
-    };
-  }
-
   factory NewsModel.fromJson(Map<String, dynamic> json) {
-    // Check for null values or default values
-    String status = json['status'] ?? '';
-    int totalResults = json['totalResults'] ?? 0;
+    String status = json['status'] ?? ''; // Default value for status
+    int totalResults =
+        json['totalResults'] ?? 0; // Default value for totalResults
     List<Article> articles = [];
 
     if (json['articles'] != null) {
-      articles = (json['articles'] as List<dynamic>)
-          .map((e) => Article.fromJson(e as Map<String, dynamic>))
-          .toList();
+      articles = List<Article>.from(
+          json['articles'].map((articleJson) => Article.fromJson(articleJson)));
     }
 
     return NewsModel(

@@ -5,13 +5,12 @@ import 'package:news_flutter/features/news/data/models/news_model.dart';
 
 class NewsViewModel {
   Future<NewsModel> getNews() async {
-    List<NewsModel> _news = [];
-
     try {
       final response = await http.get(Uri.parse(ApiUrl().getQuestion));
 
       if (response.statusCode == 200) {
         final parsed = jsonDecode(response.body);
+
         return NewsModel.fromJson(parsed);
       } else {
         throw Exception('Failed to load news');

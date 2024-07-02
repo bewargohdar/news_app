@@ -1,14 +1,14 @@
 import 'package:news_flutter/features/news/data/models/source_model.dart';
 
 class Article {
-  Source source;
-  String? author;
-  String title;
-  String? description;
-  String url;
-  String? urlToImage;
-  DateTime publishedAt;
-  String content;
+  final Source source;
+  final String author;
+  final String title;
+  final String description;
+  final String url;
+  final String urlToImage;
+  final String publishedAt;
+  final String content;
 
   Article({
     required this.source,
@@ -20,32 +20,17 @@ class Article {
     required this.publishedAt,
     required this.content,
   });
-  Map<String, dynamic> toJson() {
-    return {
-      'author': author,
-      'description': description,
-      'urlToImage': urlToImage,
-      'content': content,
-      'title': title,
-      'url': url,
-      'publishedAt': publishedAt,
-      'source': source,
-    };
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      source: Source.fromJson(json['source']),
+      author: json['author'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      url: json['url'] ?? '',
+      urlToImage: json['urlToImage'] ?? '',
+      publishedAt: json['publishedAt'] ?? '',
+      content: json['content'] ?? '',
+    );
   }
-
-  factory Article.fromJson(Map<String, dynamic> json) => Article(
-        // Calculate minutes ago
-
-        source: Source.fromJson(json['source'] as Map<String, dynamic>),
-        author: json['author'] as String?,
-        title: json['title'] as String,
-        description: json['description'] as String?,
-        url: json['url'] as String,
-        urlToImage: json['urlToImage'] as String?,
-        publishedAt: json['publishedAt'] != null
-            ? DateTime.parse(json['publishedAt'])
-            : DateTime.now(),
-
-        content: json['content'] as String,
-      );
 }
