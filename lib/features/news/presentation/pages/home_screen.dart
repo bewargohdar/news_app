@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:news_flutter/features/news/data/datasources/remote/news_view_models.dart';
 import 'package:news_flutter/features/news/data/models/article_model.dart';
 import 'package:news_flutter/features/news/data/models/news_model.dart';
+import 'package:news_flutter/features/news/presentation/pages/news_detail.dart';
+
+import 'package:news_flutter/features/news/presentation/widget/catagory_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -94,85 +97,13 @@ class _MyHomePageState extends State<HomeScreen> {
         SizedBox(
           height: 10,
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: 100,
-                height: 40,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color:
-                            selectButtonIndex == 0 ? Colors.red : Colors.grey,
-                        width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.transparent),
-                child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        selectButtonIndex = 0;
-                      });
-                    },
-                    child: Text(
-                      'General',
-                      style: TextStyle(
-                          color:
-                              selectButtonIndex == 0 ? Colors.red : Colors.grey,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ),
-              Container(
-                width: 100,
-                height: 40,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color:
-                            selectButtonIndex == 1 ? Colors.red : Colors.grey,
-                        width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.transparent),
-                child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        selectButtonIndex = 1;
-                      });
-                    },
-                    child: Text(
-                      'Health',
-                      style: TextStyle(
-                          color:
-                              selectButtonIndex == 1 ? Colors.red : Colors.grey,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ),
-              Container(
-                width: 100,
-                height: 40,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color:
-                            selectButtonIndex == 2 ? Colors.red : Colors.grey,
-                        width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.transparent),
-                child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        selectButtonIndex = 2;
-                      });
-                    },
-                    child: Text(
-                      'Finance',
-                      style: TextStyle(
-                          color:
-                              selectButtonIndex == 2 ? Colors.red : Colors.grey,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ),
-            ],
-          ),
+        CategoryButtons(
+          selectButtonIndex: selectButtonIndex,
+          onButtonPressed: (index) {
+            setState(() {
+              selectButtonIndex = index;
+            });
+          },
         ),
         const Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -190,47 +121,55 @@ class _MyHomePageState extends State<HomeScreen> {
         SizedBox(
           height: 10,
         ),
-        Container(
-          width: 380,
-          height: 300,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                  color: const Color.fromARGB(161, 158, 158, 158), width: 1.0)),
-          child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Container(
-                    width: 350,
-                    height: 200,
-                    margin: const EdgeInsets.only(top: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: _newsList.isEmpty
-                          ? Center(child: CircularProgressIndicator())
-                          : Image.network(_newsList[0].urlToImage,
-                              width: 350, fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                              return const Center(
-                                child: Text('No Image'),
-                              );
-                            }),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: Text(
-                      _newsList.isEmpty ? '' : _newsList[0].title,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return NewsDetail(article: _newsList[0]);
+            }));
+          },
+          child: Container(
+            width: 380,
+            height: 300,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                    color: const Color.fromARGB(161, 158, 158, 158),
+                    width: 1.0)),
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 350,
+                      height: 200,
+                      margin: const EdgeInsets.only(top: 12),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: _newsList.isEmpty
+                            ? Center(child: CircularProgressIndicator())
+                            : Image.network(_newsList[0].urlToImage,
+                                width: 350, fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                return const Center(
+                                  child: Text('No Image'),
+                                );
+                              }),
                       ),
                     ),
-                  ),
-                ],
-              )),
+                    Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Text(
+                        _newsList.isEmpty ? '' : _newsList[0].title,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
         ),
         Container(
             alignment: Alignment.centerLeft,
@@ -249,53 +188,60 @@ class _MyHomePageState extends State<HomeScreen> {
             scrollDirection: Axis.horizontal,
             itemCount: _newsList.length,
             itemBuilder: (context, index) {
-              return Container(
-                width: 350,
-                height: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                        color: const Color.fromARGB(161, 158, 158, 158),
-                        width: 1.0)),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          // do something
-                        },
-                        child: Container(
-                          width: 300,
-                          height: 200,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Image.network(
-                                _newsList[index + 1].urlToImage.toString(),
-                                width: 350,
-                                height: 200,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                              return const Center(
-                                child: Text('No Image'),
-                              );
-                            }),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return NewsDetail(article: _newsList[index + 1]);
+                  }));
+                },
+                child: Container(
+                  width: 350,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                          color: const Color.fromARGB(161, 158, 158, 158),
+                          width: 1.0)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            // do something
+                          },
+                          child: Container(
+                            width: 300,
+                            height: 200,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Image.network(
+                                  _newsList[index + 1].urlToImage.toString(),
+                                  width: 350,
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                return const Center(
+                                  child: Text('No Image'),
+                                );
+                              }),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        _newsList[index + 1].title,
-                        maxLines: 2,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        _newsList[index + 1].author,
-                      )
-                    ],
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          _newsList[index + 1].title,
+                          maxLines: 2,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          _newsList[index + 1].author,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );
