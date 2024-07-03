@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_flutter/features/news/data/datasources/remote/news_view_models.dart';
+import 'package:news_flutter/features/news/data/datasources/remote/news_remote_data_source.dart';
 import 'package:news_flutter/features/news/data/models/article_model.dart';
-import 'package:news_flutter/features/news/data/models/news_model.dart';
+
 import 'package:news_flutter/features/news/presentation/pages/news_detail.dart';
 
 import 'package:news_flutter/features/news/presentation/widget/catagory_button.dart';
@@ -27,7 +27,7 @@ class _MyHomePageState extends State<HomeScreen> {
 
   Future<void> _fetchNews() async {
     try {
-      final news = await NewsViewModel().getNews();
+      final news = await NewsRemoteDataSource().fetchNews();
 
       setState(() {
         _newsList =

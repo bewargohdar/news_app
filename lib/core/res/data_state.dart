@@ -2,16 +2,15 @@ import 'package:dio/dio.dart';
 
 abstract class DataState<T> {
   final T? data;
-  // ignore: deprecated_member_use
-  final Dio? error;
+  final String? error;
 
-  const DataState({this.data, this.error});
+  DataState({this.data, this.error});
 }
 
 class DataSuccess<T> extends DataState<T> {
-  const DataSuccess(T data) : super(data: data);
+  DataSuccess(T data) : super(data: data);
 }
 
 class DataError<T> extends DataState<T> {
-  const DataError(Dio error) : super(error: error);
+  DataError(String error) : super(error: error);
 }

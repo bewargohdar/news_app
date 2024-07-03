@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:news_flutter/features/news/data/api/api_url.dart';
 import 'package:news_flutter/features/news/data/models/news_model.dart';
 
-class NewsViewModel {
-  Future<NewsModel> getNews() async {
+class NewsRemoteDataSource {
+  Future<NewsModel> fetchNews() async {
     try {
       final response = await http.get(Uri.parse(ApiUrl().getQuestion));
 
