@@ -22,14 +22,10 @@ class NewsListItemWidget extends StatelessWidget {
         );
       },
       child: Container(
-        width: 350,
+        width: 280,
         height: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: const Color.fromARGB(161, 158, 158, 158),
-            width: 1.0,
-          ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -37,14 +33,14 @@ class NewsListItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 300,
-                height: 200,
+                width: 250,
+                height: 150,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Image.network(
                     article.urlToImage ?? '',
-                    width: 350,
-                    height: 200,
+                    width: 250,
+                    height: 150,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return const Center(
@@ -60,10 +56,10 @@ class NewsListItemWidget extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Text(
-                article.author ?? '',
+                article.source.name ?? '',
               ),
             ],
           ),
