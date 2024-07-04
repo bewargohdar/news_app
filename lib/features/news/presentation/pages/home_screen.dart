@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:news_flutter/features/news/data/datasources/remote/news_remote_data_source.dart';
 import 'package:news_flutter/features/news/data/models/article_model.dart';
 
-import 'package:news_flutter/features/news/presentation/pages/news_detail.dart';
+import 'package:news_flutter/features/news/presentation/pages/news_detail_screen.dart';
 
 import 'package:news_flutter/features/news/presentation/widget/catagory_button.dart';
+import 'package:news_flutter/features/news/presentation/widget/news_list_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -182,69 +183,12 @@ class _MyHomePageState extends State<HomeScreen> {
         const SizedBox(
           height: 10,
         ),
-        //add listview here
         Expanded(
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: _newsList.length,
             itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return NewsDetail(article: _newsList[index + 1]);
-                  }));
-                },
-                child: Container(
-                  width: 350,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                          color: const Color.fromARGB(161, 158, 158, 158),
-                          width: 1.0)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            // do something
-                          },
-                          child: Container(
-                            width: 300,
-                            height: 200,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: Image.network(
-                                  _newsList[index + 1].urlToImage.toString(),
-                                  width: 350,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                return const Center(
-                                  child: Text('No Image'),
-                                );
-                              }),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          _newsList[index + 1].title,
-                          maxLines: 2,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          _newsList[index + 1].author,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              );
+              return NewsListItemWidget(article: _newsList[index + 1]);
             },
           ),
         ),
