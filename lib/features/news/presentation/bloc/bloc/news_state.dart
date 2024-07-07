@@ -1,6 +1,19 @@
-part of 'news_bloc.dart';
+import 'package:news_flutter/features/news/data/models/article_model.dart';
 
-@immutable
-sealed class NewsState {}
+abstract class NewsState {}
 
-final class NewsInitial extends NewsState {}
+class NewsInitial extends NewsState {}
+
+class NewsLoaded extends NewsState {
+  final List<Article> articles;
+
+  NewsLoaded(this.articles);
+}
+
+class NewsLoading extends NewsState {}
+
+class NewsError extends NewsState {
+  final String message;
+
+  NewsError(this.message);
+}
