@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_flutter/features/news/data/models/article_model.dart';
+import 'package:news_flutter/features/news/domain/entitis/article.dart';
 
 class NewsDetail extends StatelessWidget {
   const NewsDetail({super.key, required this.article});
-  final Article article;
+  final ArticleEntity article;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +37,7 @@ class NewsDetail extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                article.content,
+                article.description,
                 style: const TextStyle(
                   fontSize: 16,
                 ),

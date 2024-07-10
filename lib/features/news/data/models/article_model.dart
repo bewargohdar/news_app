@@ -1,6 +1,7 @@
 import 'package:news_flutter/features/news/data/models/source_model.dart';
+import 'package:news_flutter/features/news/domain/entitis/article.dart';
 
-class Article {
+class Article extends ArticleEntity {
   final Source source;
   final String author;
   final String title;
@@ -19,7 +20,16 @@ class Article {
     required this.urlToImage,
     required this.publishedAt,
     required this.content,
-  });
+  }) : super(
+          author: author,
+          title: title,
+          description: description,
+          url: url,
+          urlToImage: urlToImage,
+          publishedAt: publishedAt,
+          source: source,
+          content: content,
+        );
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_flutter/features/news/data/models/article_model.dart';
+import 'package:news_flutter/features/news/domain/entitis/article.dart';
 import 'package:news_flutter/features/news/presentation/pages/news_detail_screen.dart'; // Adjust this import based on your actual model
 
 class NewsListItemWidget extends StatelessWidget {
-  final Article article; // Adjust this based on your actual model
+  final ArticleEntity article;
 
   const NewsListItemWidget({
     Key? key,
@@ -58,9 +59,8 @@ class NewsListItemWidget extends StatelessWidget {
                 style:
                     const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Text(
-                article.source.name ?? '',
-              ),
+              Text(article.author ?? '',
+                  style: const TextStyle(fontSize: 12, color: Colors.grey)),
             ],
           ),
         ),

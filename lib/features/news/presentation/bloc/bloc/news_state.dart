@@ -1,11 +1,12 @@
 import 'package:news_flutter/features/news/data/models/article_model.dart';
+import 'package:news_flutter/features/news/domain/entitis/article.dart';
 
 abstract class NewsState {}
 
 class NewsInitial extends NewsState {}
 
 class NewsLoaded extends NewsState {
-  final List<Article> articles;
+  final List<ArticleEntity> articles;
 
   NewsLoaded(this.articles);
 }

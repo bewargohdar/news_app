@@ -1,6 +1,7 @@
 import 'package:news_flutter/core/res/data_state.dart';
 import 'package:news_flutter/features/news/data/datasources/remote/news_remote_data_source.dart';
 import 'package:news_flutter/features/news/data/models/news_model.dart';
+import 'package:news_flutter/features/news/domain/entitis/article.dart';
 import 'package:news_flutter/features/news/domain/repository/news_repository.dart';
 
 class NewsRepositoryImpl implements NewsRepository {
@@ -9,9 +10,9 @@ class NewsRepositoryImpl implements NewsRepository {
   NewsRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<DataState<NewsModel>> getNews() async {
+  Future<DataState<List<ArticleEntity>>> getNews() async {
     try {
-      NewsModel news = await remoteDataSource.fetchNews();
+      final news = await remoteDataSource.fetchNews();
 
       return DataSuccess(news);
     } catch (e) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_flutter/features/news/data/datasources/remote/news_remote_data_source.dart';
 import 'package:news_flutter/features/news/data/models/article_model.dart';
+import 'package:news_flutter/features/news/domain/entitis/article.dart';
 import 'package:news_flutter/features/news/presentation/bloc/bloc/news_bloc.dart'; // Importing the NewsBloc class directly
 import 'package:news_flutter/features/news/presentation/bloc/bloc/news_state.dart';
 
@@ -23,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _MyHomePageState extends State<HomeScreen> {
   int selectButtonIndex = 0;
-  List<Article> _newsList = [];
+  List<ArticleEntity> _newsList = [];
 
   @override
   void initState() {
