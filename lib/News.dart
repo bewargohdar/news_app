@@ -6,6 +6,7 @@ import 'package:news_flutter/features/news/domain/repository/news_repository.dar
 import 'package:news_flutter/features/news/domain/usecase/get_article.dart';
 import 'package:news_flutter/features/news/presentation/bloc/bloc/news_bloc.dart';
 import 'package:news_flutter/features/news/presentation/pages/home_screen.dart';
+import 'package:news_flutter/injection_container.dart';
 
 class News extends StatelessWidget {
   const News({super.key});
@@ -13,17 +14,11 @@ class News extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewsBloc(
-        GetArticle(
-          NewsRepositoryImpl(
-            remoteDataSource: NewsRemoteDataSource(),
-          ),
-        ),
-      ),
+      create: (context) => sl<NewsBloc>(),
       child: const MaterialApp(
         title: 'NewsApp',
         home: HomeScreen(
-          title: 'Flutter Demo Home Page',
+          title: 'NewsApp',
         ),
       ),
     );

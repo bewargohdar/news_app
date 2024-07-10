@@ -1,13 +1,11 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:news_flutter/features/news/data/api/api_url.dart';
-import 'package:news_flutter/features/news/data/models/news_model.dart';
-import 'package:news_flutter/features/news/domain/entitis/article.dart';
 
 import '../../models/article_model.dart';
 
 class NewsRemoteDataSource {
-  Future<List<ArticleEntity>> fetchNews() async {
+  Future<List<Article>> fetchNews() async {
     try {
       final response = await http.get(Uri.parse(ApiUrl().getQuestion));
 
