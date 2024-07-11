@@ -1,12 +1,17 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:news_flutter/features/news/data/models/source_model.dart';
 import 'package:news_flutter/features/news/domain/entitis/article.dart';
+part 'article_model.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 class Article extends ArticleEntity {
   final Source source;
+
   final String author;
   final String title;
   final String description;
   final String url;
+  @JsonKey(name: 'urlToImage')
   final String urlToImage;
   final String publishedAt;
   final String content;
@@ -31,16 +36,19 @@ class Article extends ArticleEntity {
           content: content,
         );
 
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return Article(
-      source: Source.fromJson(json['source']),
-      author: json['author'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
-      url: json['url'] ?? '',
-      urlToImage: json['urlToImage'] ?? '',
-      publishedAt: json['publishedAt'] ?? '',
-      content: json['content'] ?? '',
-    );
-  }
+  factory Article.fromJson(Map<String, dynamic> json) =>
+      _$ArticleFromJson(json);
+  Map<String, dynamic> toJson() => _$ArticleToJson(this);
+
+  @override
+  List<Object?> get props => [
+        source,
+        author,
+        title,
+        description,
+        url,
+        urlToImage,
+        publishedAt,
+        content,
+      ];
 }
