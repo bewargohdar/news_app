@@ -12,9 +12,9 @@ class NewsModel {
   });
 
   factory NewsModel.fromJson(Map<String, dynamic> json) {
-    String status = json['status'] ?? ''; // Default value for status
+    String status = json['status'] ?? ''; 
     int totalResults =
-        json['totalResults'] ?? 0; // Default value for totalResults
+        json['totalResults'] ?? 0; 
     List<Article> articles = [];
 
     if (json['articles'] != null) {
