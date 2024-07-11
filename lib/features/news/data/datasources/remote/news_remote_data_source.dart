@@ -11,6 +11,7 @@ class NewsRemoteDataSource {
 
       if (response.statusCode == 200) {
         final parsed = jsonDecode(response.body);
+
         final List<Article> articles = parsed['articles']
             .map<Article>((json) => Article.fromJson(json))
             .toList();
